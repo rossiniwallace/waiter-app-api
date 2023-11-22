@@ -1,0 +1,49 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum StatusEnum {
+  WAITING
+  IN_PRODUCTION
+  DONE
+}
+
+model Category {
+  id      String    @id @default(uuid())
+  name    String    @db.VarChar(25)
+  icon    String    @db.VarChar(10)
+  Product Product[]
+}
+
+model Order {
+  id       String         @id @default(uuid())
+  table    String         @db.VarChar(25)
+  status   StatusEnum     @default(WAITING)
+  products ProductOrder[]
+}
+
+model Product {
+  id          String         @id @default(uuid())
+  name        String         @db.VarChar(25)
+  description String         @db.Text
+  price       Decimal        @db.Decimal(10, 7)
+  category    String
+  Category    Category       @relation(fields: [category], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  imagePath   String         @db.VarChar(225)
+  ingredients String
+  orders      ProductOrder[]
+}
+
+model ProductOrder {
+  id        String  @id @default(uuid())
+  productId String
+  quantity  Int
+  orderId   String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  Order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+}
