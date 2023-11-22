@@ -11,7 +11,7 @@ export class OrderController {
 
         await orderService.show()
             .then((order) => {
-                res.status(201).json(order)
+                res.status(200).json(order)
             }).catch((error) => {
                 if (error instanceof ErrorCustom) {
                     throw new ErrorCustom(error.message, error.statusCode);

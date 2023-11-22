@@ -2,6 +2,7 @@ import {OrderIFC} from "../interfaces/OrderIFC";
 import prisma from "../database/prisma";
 import {ErrorCustom} from "../errors/ErrorCustom";
 import {StatusEnum} from "../enums/StatusEnum";
+import {io} from "../app";
 
 export class OrderService {
     async show(){
@@ -38,6 +39,21 @@ export class OrderService {
                     products: true
                 }
             });
+
+            const orderDetails = await prisma.order.findMany({
+                include: {
+                    products: {
+                        include: {
+                            product: true
+                        }
+                    }
+                },
+                where: {
+                    id: order.id
+                }
+            });
+
+            io.emit("order@new",orderDetails)
 
 
             return order;
