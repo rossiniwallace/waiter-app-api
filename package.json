@@ -3,10 +3,14 @@
   "version": "1.0.0",
   "description": "API Rest WaiterApp",
   "main": "index.js",
+  "engines": {
+    "node": "21"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc",
-    "dev": "nodemon src/app.ts"
+    "build": "tsup src",
+    "dev": "nodemon src/app.ts",
+    "start": "node dist/app.js"
   },
   "prisma": {
     "seed": "ts-node prisma/seed.ts"
@@ -22,6 +26,7 @@
     "nodemon": "^3.0.1",
     "prisma": "^5.6.0",
     "ts-node": "^10.9.1",
+    "tsup": "^8.0.1",
     "typescript": "^5.3.2"
   },
   "dependencies": {
