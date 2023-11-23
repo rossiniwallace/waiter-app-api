@@ -53,7 +53,7 @@ export class OrderService {
                 }
             });
 
-            io.emit("order@new",orderDetails)
+            io.emit("orders@new",orderDetails)
 
 
             return order;
