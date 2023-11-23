@@ -40,7 +40,7 @@ export class OrderService {
                 }
             });
 
-            const orderDetails = await prisma.order.findMany({
+            const orderDetails = await prisma.order.findUnique({
                 include: {
                     products: {
                         include: {
@@ -55,8 +55,7 @@ export class OrderService {
 
             io.emit("orders@new",orderDetails)
 
-
-            return order;
+            return orderDetails;
         }catch (error){
             if(error instanceof ErrorCustom){
                 throw new ErrorCustom(error.message,error.statusCode)
