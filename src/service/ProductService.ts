@@ -40,7 +40,7 @@ export class ProductService {
             // @ts-ignore
             const product = await prisma.product.create({data})
 
-            return product ;
+            return product
         }catch (error){
             if(error instanceof ErrorCustom){
                 throw new ErrorCustom(error.message,error.statusCode)

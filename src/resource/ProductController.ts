@@ -1,12 +1,14 @@
 import {Request, Response} from "express";
 import {ErrorCustom} from "../errors/ErrorCustom";
 import {ProductService} from "../service/ProductService";
-import {ProductIFC} from "../interfaces/ProductIFC";
+import {UploadFileService} from "../service/UploadFileService";
+// import {ProductIFC} from "../interfaces/ProductIFC";
 
 const productService = new ProductService();
+
 export class ProductController {
 
-    async show(_req:Request, res: Response){
+    async show(_req: Request, res: Response) {
         await productService.show()
             .then((products) => {
                 res.status(200).json(products)
@@ -17,7 +19,7 @@ export class ProductController {
             })
     }
 
-    async listProductsByCategory(req:Request, res: Response){
+    async listProductsByCategory(req: Request, res: Response) {
         const {categoryId} = req.params
         await productService.listProductsByCategory(categoryId)
             .then((products) => {
@@ -29,19 +31,24 @@ export class ProductController {
             })
     }
 
-    async create(req:Request, res: Response){
-        let body: ProductIFC = req.body;
-        const imagePath = String(req.file?.filename);
+    async create(req: Request, res: Response) {
+        const {body, file} = req;
 
-        body.imagePath = imagePath
+        const uploadImageService = new UploadFileService();
 
-        await productService.create(body)
-            .then((category) => {
-                res.status(201).json(category)
-            }).catch((error) => {
-                if (error instanceof ErrorCustom) {
-                    throw new ErrorCustom(error.message, error.statusCode);
-                }
-            })
+        if(file!==undefined){
+            const url = await uploadImageService.execute(file);
+
+            body.imagePath = url
+
+            await productService.create(body)
+                .then((category) => {
+                    return res.status(201).json(category)
+                }).catch((error) => {
+                    if (error instanceof ErrorCustom) {
+                        throw new ErrorCustom(error.message, error.statusCode);
+                    }
+                })
+        }
     }
 }

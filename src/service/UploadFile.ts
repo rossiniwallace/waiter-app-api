@@ -2,7 +2,7 @@ import multer from "multer";
 import { Request } from "express";
 import path from "node:path";
 
-export const uploadFile = multer({
+export const uploadMulter = multer({
     storage : multer.diskStorage({
         destination(_req: Request,_file: Express.Multer.File, callback){
             callback(null,path.resolve(__dirname,"..","..","uploads"));

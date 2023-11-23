@@ -1,10 +1,12 @@
 import { Router } from "express";
 import {CategoryController} from "./resource/CategoryController";
-import {uploadFile} from "./service/UploadFile";
 import {ProductController} from "./resource/ProductController";
 import {OrderController} from "./resource/OrderController";
-
+import multer from "multer";
+import MulterConfig from "./config/MulterConfig";
 export const router = Router();
+
+const upload = multer(MulterConfig)
 
 const categoryCtrl = new CategoryController();
 const productCtrl = new ProductController();
@@ -14,7 +16,7 @@ router.post("/categories",categoryCtrl.create)
 router.get("/categories",categoryCtrl.show)
 router.get("/categories/:categoryId/products",productCtrl.listProductsByCategory);
 
-router.post("/products",uploadFile.single("image"), productCtrl.create);
+router.post("/products",upload.single("image"), productCtrl.create);
 router.get("/products",productCtrl.show);
 
 router.get("/orders",orderCtrl.show)
