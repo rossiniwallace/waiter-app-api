@@ -29,7 +29,7 @@ model Order {
 
 model Product {
   id          String         @id @default(uuid())
-  name        String         @db.VarChar(25)
+  name        String         @db.VarChar(100)
   description String         @db.Text
   price       Decimal        @db.Decimal(10, 7)
   category    String

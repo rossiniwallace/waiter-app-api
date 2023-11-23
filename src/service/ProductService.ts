@@ -7,7 +7,9 @@ export class ProductService {
     async show(){
         try {
             // @ts-ignore
-            const products = await prisma.product.findMany();
+            const products = await prisma.product.findMany({orderBy: {
+                name: 'asc'
+                }});
 
             products.forEach(item => item.ingredients = JSON.parse(item.ingredients)) ;
 
@@ -22,9 +24,14 @@ export class ProductService {
     async listProductsByCategory(category: string){
         try {
             // @ts-ignore
-            const products = await prisma.product.findMany({where: {
-                    category
-                }});
+            const products = await prisma.product.findMany({
+                where: {
+                    category,
+                },
+                orderBy: {
+                    name: 'asc'
+                }
+            });
 
             products.forEach(item => item.ingredients = JSON.parse(item.ingredients)) ;
 

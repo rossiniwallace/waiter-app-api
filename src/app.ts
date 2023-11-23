@@ -9,7 +9,7 @@ const app = express();
 const server = http.createServer(app);
 export const io = new Server(server);
 
-const port = 4000
+const port = Number(process.env.PORT) | 4000
 
 app.use(cors({
     origin: "*"
@@ -38,5 +38,5 @@ io.on('connection', (socket) => {
 });
 
 server.listen(port,() => {
-    console.log(`🚀 Server is running`);
+    console.log(`🚀 Server is running in port ${port}`);
 })
